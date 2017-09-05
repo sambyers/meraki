@@ -2,7 +2,7 @@ import requests
 import argparse
 
 api_url = "https://dashboard.meraki.com/api/v0/"
-api_key = "4008d11a8c0f3ef8e1e3c81650895e30f043718f" #For demonstration only. Not a real API key.
+api_key = "4008d11a8c0f3" #For demonstration only. Not a real API key.
 
 
 def get_args():
