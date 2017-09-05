@@ -14,11 +14,11 @@ def main():
     org_name = args.org
     network_name = args.net
 
-    # Grab the org id and network id based on the named provided.
+    # Grab the org id and network id based on the names provided.
     org_id = get_orgid(org_name, api_url, api_key)
     network_id = get_networkid(org_id, network_name, api_url, api_key)
 
-    # Grad all subnets that are configured on VLANs and as static routes.
+    # Grab all subnets that are configured on VLANs and as static routes.
     vlan_subnets = get_vlansubnets(network_id, api_url, api_key)
     static_routes_subnets = get_staticsubnets(network_id, api_url, api_key)
     
