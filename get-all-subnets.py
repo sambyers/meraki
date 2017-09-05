@@ -2,7 +2,7 @@ import requests
 import argparse
 
 api_url = "https://dashboard.meraki.com/api/v0/"
-api_key = "4008d11a8c0f3ef8e1e3c81650895e30f043718f"
+api_key = "4008d11a8c0f3ef8e1e3c81650895e30f043718f" #For demonstration only. Not a real API key.
 
 
 def get_args():
@@ -20,6 +20,7 @@ def get_args():
 def _get(api_endpoint, api_url=api_url, api_key=api_key):
     '''
     Generic get
+    Return requests object.
     '''
     url = api_url + api_endpoint
     payload = ""
@@ -39,6 +40,7 @@ def _get(api_endpoint, api_url=api_url, api_key=api_key):
 def get_orgid(org_name):
     '''
     Get org id based on name given.
+    Return string Organization name.
     '''
     api_endpoint = "organizations"
     response = _get(api_endpoint)
@@ -52,6 +54,7 @@ def get_orgid(org_name):
 def get_networkid(orgid, network_name):
     '''
     Get network id based on name given.
+    Return string of network id.
     '''
     api_endpoint = "organizations/{0}/networks".format(orgid)
     response = _get(api_endpoint)
@@ -76,7 +79,7 @@ def get_vlans(network_id):
 def get_vlansubnets(network_id):
     '''
     Get the subnet information for each VLAN in the network.
-    Returns a list of subnets
+    Returns a list of subnets.
     '''
 
     subnets = []
@@ -89,6 +92,7 @@ def get_vlansubnets(network_id):
 def get_staticroutes(network_id):
     '''
     Get all static routes and thheir details in a network.
+    Return list/dictionary of the json response.
     '''
     api_endpoint = "networks/{0}/staticRoutes".format(network_id)
     response = _get(api_endpoint)
@@ -97,6 +101,9 @@ def get_staticroutes(network_id):
 
 
 def get_staticsubnets(network_id):
+    '''
+    Get static routes and return only the subnet portion as a list.
+    '''
     subnets = []
     routes = get_staticroutes(network_id)
     for route in routes:
@@ -111,12 +118,15 @@ def main():
     org_name = args.org
     network_name = args.net
 
+    # Grab the org id and network id based on the named provided.
     org_id = get_orgid(org_name)
     network_id = get_networkid(org_id, network_name)
 
+    # Grad all subnets that are configured on VLANs and as static routes.
     vlan_subnets = get_vlansubnets(network_id)
     static_routes_subnets = get_staticsubnets(network_id)
     
+    # Concatenate the two subnet lists.
     subnets = vlan_subnets + static_routes_subnets
     print(subnets)
 
