@@ -86,7 +86,6 @@ def get_vlansubnets(network_id, api_url, api_key):
     Get the subnet information for each VLAN in the network.
     Returns a list of subnets.
     '''
-
     subnets = []
     vlans = get_vlans(network_id, api_url, api_key)
     for vlan in vlans:
