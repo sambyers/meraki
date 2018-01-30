@@ -12,7 +12,7 @@ def get_args():
     parser.add_argument('-k', '--key', type=str, help="API Key for Meraki.")
     parser.add_argument('-o', '--org', type=str, help="Organization name.")
     parser.add_argument('-n', '--net', type=str, help="Network name.")
-    parser.add_argument('-csv', action="store_true", help="Export network list as csv.")
+    parser.add_argument('-t', action="store_true", help="Export network list as text file.")
 
     args = parser.parse_args()
     return args
@@ -64,7 +64,7 @@ def get_networkid(orgid, network_name, api_url, api_key):
     api_endpoint = "organizations/{0}/networks".format(orgid)
     response = _get(api_endpoint, api_url, api_key)
     json = response.json()
-    
+
     for network in json:
         if network_name == (network['name']):
             return network['id']
@@ -113,4 +113,3 @@ def get_staticsubnets(network_id, api_url, api_key):
     for route in routes:
         subnets.append(route['subnet'])
     return subnets
-
