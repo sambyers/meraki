@@ -9,7 +9,7 @@ enterprise_networks = [
     {
         'network_name': 'Lab-test-spoke1',
         'VLANS': [
-            {'id': 20, 'name': 'CDE', 'applianceIp': '172.16.27.1', 'subnet': '172.16.27.0/24', "dnsNameservers": "opendns"}
+            {'id': 20, 'name': 'CDE', 'applianceIp': '172.16.20.1', 'subnet': '172.16.20.0/24', "dnsNameservers": "opendns"}
         ]
     }
 ]
