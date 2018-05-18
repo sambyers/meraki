@@ -1,7 +1,6 @@
 
 from meraki_helper import get_orgid, get_networkid, get_vlans, update_vlan, get_vlan
 import  enterprise_vlan_configuration
-import json
 import argparse
 
 def get_args():
