@@ -1,0 +1,32 @@
+[
+    {
+        "comment": "Private FTP Server",
+        "policy": "deny",
+        "protocol": "tcp",
+        "srcPort": "Any",
+        "srcCidr": "Any",
+        "destPort": "21,22",
+        "destCidr": "192.168.21.123/32",
+        "syslogEnabled": false
+    },
+    {
+        "comment": "implicit deny rule",
+        "policy": "deny",
+        "protocol": "Any",
+        "srcPort": "Any",
+        "srcCidr": "Any",
+        "destPort": "Any",
+        "destCidr": "Any",
+        "syslogEnabled": false
+    },
+    {
+        "comment": "Default rule",
+        "policy": "allow",
+        "protocol": "Any",
+        "srcPort": "Any",
+        "srcCidr": "Any",
+        "destPort": "Any",
+        "destCidr": "Any",
+        "syslogEnabled": false
+    }
+]

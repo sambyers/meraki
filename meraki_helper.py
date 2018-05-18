@@ -1,8 +1,6 @@
 import requests
 import argparse
-
-# To do
-# - Class-ify this collection of functions
+import json
 
 def get_args():
     '''
@@ -17,26 +15,49 @@ def get_args():
     args = parser.parse_args()
     return args
 
-
 def _get(api_endpoint, api_url, api_key):
     '''
     Generic get
     Return requests object.
     '''
     url = api_url + api_endpoint
-    payload = ""
+    body = ""
     headers = {
         'content-type': "application/json",
         'x-cisco-meraki-api-key': api_key
         }
 
     try:
-        response = requests.request("GET", url, data=payload, headers=headers)
+        response = requests.request("GET", url, data=body, headers=headers)
+        if response.status_code >= 400:
+            response.raise_for_status()
         return response
     except(NameError):
         print("The response is empty.")
         raise SystemExit
+    except(ConnectionError):
+        print("Missing or invalid connection argument (orgid, api_url, api_key).")
+        raise SystemExit
 
+def _put(api_endpoint, api_url, api_key, body):
+    '''
+    Generic put
+    Return requests object.
+    '''
+    url = api_url + api_endpoint
+    headers = {
+        'content-type': "application/json",
+        'x-cisco-meraki-api-key': api_key
+        }
+    #body = json.dumps(body)
+    try:
+        response = requests.request("PUT", url, json=body, headers=headers)
+        if response.status_code >= 400:
+            response.raise_for_status()
+        return response
+    except(ConnectionError):
+        print("Missing or invalid connection argument (orgid, api_url, api_key).")
+        raise SystemExit
 
 def get_orgid(org_name, api_url, api_key):
     '''
@@ -55,7 +76,6 @@ def get_orgid(org_name, api_url, api_key):
         if org_name in (org['name']):
             return org['id']
 
-
 def get_networkid(orgid, network_name, api_url, api_key):
     '''
     Get network id based on name given.
@@ -69,7 +89,6 @@ def get_networkid(orgid, network_name, api_url, api_key):
         if network_name == (network['name']):
             return network['id']
 
-
 def get_vlans(network_id, api_url, api_key):
     '''
     Get all of the VLANs and their details in a network.
@@ -77,9 +96,27 @@ def get_vlans(network_id, api_url, api_key):
     '''
     api_endpoint = "networks/{0}/vlans".format(network_id)
     response = _get(api_endpoint, api_url, api_key)
-    json = response.json()
-    return json
+    result = response.json()
+    return result
 
+def get_vlan(network_id, api_url, api_key, vlan_id):
+    '''
+    Get a VLAN and its details.
+    Returns a list/dictionary of the json response.
+    '''
+    api_endpoint = "networks/{0}/vlans/{1}".format(network_id, vlan_id)
+    response = _get(api_endpoint, api_url, api_key)
+    result = response.json()
+    return result
+
+def update_vlan(network_id, api_url, api_key, vlan_id, body):
+    '''
+    Update a VLAN subnet or name for a given network.
+    Returns a list/dictionary of the json response.
+    '''
+    api_endpoint = "networks/{0}/vlans/{1}".format(network_id, vlan_id)
+    response = _put(api_endpoint, api_url, api_key, body)
+    return response
 
 def get_vlansubnets(network_id, api_url, api_key):
     '''
@@ -92,7 +129,6 @@ def get_vlansubnets(network_id, api_url, api_key):
         subnets.append(vlan['subnet'])
     return subnets
 
-
 def get_staticroutes(network_id, api_url, api_key):
     '''
     Get all static routes and thheir details in a network.
@@ -102,7 +138,6 @@ def get_staticroutes(network_id, api_url, api_key):
     response = _get(api_endpoint, api_url, api_key)
     json = response.json()
     return json
-
 
 def get_staticsubnets(network_id, api_url, api_key):
     '''
