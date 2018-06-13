@@ -1,8 +1,21 @@
 
-from meraki_helper import get_args, get_orgid, get_networkid, get_vlansubnets, get_staticsubnets
-
+from meraki_helper import get_orgid, get_networkid, get_vlansubnets, get_staticsubnets
+import argparse
 # To do:
 # - Add csv export
+
+def get_args():
+    '''
+    Get args from CLI.
+    '''
+    parser = argparse.ArgumentParser(description="Get arguments for script.")
+    parser.add_argument('-k', '--key', type=str, help="API Key for Meraki.")
+    parser.add_argument('-o', '--org', type=str, help="Organization name.")
+    parser.add_argument('-n', '--net', type=str, help="Network name.")
+    parser.add_argument('-t', action="store_true", help="Export network list as text file.")
+
+    args = parser.parse_args()
+    return args
 
 def main():
 
