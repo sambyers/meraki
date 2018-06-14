@@ -19,8 +19,6 @@ def get_args():
 
 def main():
 
-    api_url = "https://dashboard.meraki.com/api/v0/"
-
     # Collect args from user
     args = get_args()
     api_key = args.key
@@ -29,12 +27,12 @@ def main():
     text_export = args.t
 
     # Grab the org id and network id based on the names provided.
-    org_id = get_orgid(org_name, api_url, api_key)
-    network_id = get_networkid(org_id, network_name, api_url, api_key)
+    org_id = get_orgid(org_name, api_key)
+    network_id = get_networkid(org_id, network_name, api_key)
 
     # Grab all subnets that are configured on VLANs and as static routes.
-    vlan_subnets = get_vlansubnets(network_id, api_url, api_key)
-    static_routes_subnets = get_staticsubnets(network_id, api_url, api_key)
+    vlan_subnets = get_vlansubnets(network_id, api_key)
+    static_routes_subnets = get_staticsubnets(network_id, api_key)
 
     # Concatenate the two subnet lists.
     subnets = vlan_subnets + static_routes_subnets
