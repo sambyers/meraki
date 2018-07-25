@@ -9,3 +9,4 @@ Repo for scripts written for Meraki
 ```usage: get-all-subnets.py [-h] [-k KEY] [-o ORG] [-n NET]```
 - **update_vlans**: Updates VLANs based on a configuration file. Useful for post template corrections or variations.
 ```usage: update_vlans.py [-h] [-k KEY] [-o ORG]```
+- **gpmod**: Updates Group Policy on devices based on the gpconfig file.
